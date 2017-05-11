@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>捐款列表</title>
+    <script type="text/javascript" src="./js/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="./laydate/laydate.dev.js"></script>
+    <script type="text/javascript" src="./js/dataList.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            background-color: #e6e6e6;
+            font-family: 'Microsoft YaHei';
+            /*font-size: 16px;*/
+        }
+
+        input {
+            outline: none;
+            border: 1px solid #ccc;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
+        .donation form fieldset input[type='button']:hover {
+            background-color: #031927;
+            color: wheat;
+        }
+
+        .donation {
+            width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, .5);
+        }
+
+        .donation h1 {
+            font-family: '楷体';
+            font-size: 40px;
+            text-shadow: 0 0 20px rgba(0, 0, 0, .5);
+            letter-spacing: 40px;
+            color: #ff0b0b;
+            text-align: center;
+            line-height: 100px;
+        }
+
+        .donation form fieldset {
+            padding: 10px;
+            border-color: #ccc;
+        }
+
+        .donation form fieldset legend {
+            font-size: 20px;
+            color: black;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, .5);
+        }
+
+        .donation form fieldset .unit,
+        .donation form fieldset .getUnit {
+            width: 140px;
+            height: 26px;
+            text-align: center;
+            padding-left: 5px;
+        }
+
+        .donation form fieldset input[type='button'],
+        .donation form fieldset .person,
+        .donation form fieldset .money,
+        .donation form fieldset .date {
+            width: 100px;
+            height: 26px;
+            line-height: 26px;
+            text-align: center;
+        }
+
+        .donation form fieldset .line {
+            width: 100%;
+            height: 1px;
+            border-bottom: 1px solid #ccc;
+            margin: 10px 0;
+        }
+
+        .donation form fieldset .date {
+            width: 80px;
+        }
+
+        .donation form fieldset #addBtn {
+            width: 60px;
+        }
+        /*表格*/
+
+        .donation form fieldset table {
+            width: 100%;
+            text-align: center;
+            border: 1px solid #666;
+            border-collapse: collapse;
+        }
+
+        .donation form fieldset table td,
+        .donation form fieldset table th {
+            width: 16.6666%;
+            border: 1px solid #666;
+        }
+
+        .donation form fieldset table th {
+            border-right: 1px solid #fff;
+        }
+
+        .donation form fieldset table th:last-of-type {
+            border-right: 1px solid #666;
+        }
+
+        .donation form fieldset table thead tr {
+            height: 40px;
+            border: 1px solid #666;
+            background-color: #3ed5f5;
+        }
+
+        .donation form fieldset table tbody tr {
+            height: 35px;
+        }
+
+        .donation form fieldset table tbody .redact,
+        .donation form fieldset table tbody .del {
+            margin: 0 15px;
+            font-weight: 700;
+            color: #1814a9;
+            cursor: pointer;
+        }
+
+        .donation form fieldset table tbody .redact:hover,
+        .donation form fieldset table tbody .del:hover {
+            color: #ff0b0b;
+        }
+        
+        .donation form fieldset .disable {
+            background-color: #ff0b0b;
+            cursor: not-allowed;
+        }
+        .donation form fieldset table tbody input,
+        .donation form fieldset table tbody select {
+            font-size: 16px;
+            text-align: center;
+        }
+        .donation form fieldset table tbody .rewriteInput,
+        .donation form fieldset table tbody .getUnit {
+            margin: 2px;
+            width: 80%;
+            height: 30px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="donation">
+        <h1>捐款管理</h1>
+        <form action=''>
+            <fieldset>
+                <legend>捐款详细信息</legend>
+
+                <!--查询-->
+                <lable>捐款单位:</lable>
+                <select class="unit" id="s_select">
+                    <option value="">--请选择--</option>
+                </select>
+                <input type="button" name="cx-btn" id="querybtn" value="查&nbsp;&nbsp;询">
+                <input type="button" name="sy-btn" class="disable" value="上一页" id="prepage">
+                <input type="button" name="xy-btn" value="下一页" id="nextpage"> 当前页数：
+                <span id="pageindex">1</span> / 总页数：<span id="count"></span>
+
+                <!--分割线-->
+                <div class="line"></div>
+
+                <!--添加数据-->
+                <lable>捐款人：</lable>
+                <input type="text" id="pname" class="person" value="">
+                <lable>单 位：</lable>
+                <select name="unit" id="addselect" class="getUnit">
+                    <option value="">壹基金</option>
+                </select>
+                <lable>金 额：</lable>
+                <input type="number" id="money" class="money" value="">
+                <lable>时 间：</lable>
+                <input type="text" id="J-xl" class="date">
+                <input type="button" id="addBtn" value="添 加">
+
+                <!--分割线-->
+                <div class="line"></div>
+
+                <!--table列表-->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>序号
+                            </th>
+                            <th>捐款人
+                            </th>
+                            <th>捐款单位
+                            </th>
+                            <th>金额
+                            </th>
+                            <th>时间
+                            </th>
+                            <th>操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="t_body">
+                        <!--<tr>
+                            <td>1</td>
+                            <td>张XX</td>
+                            <td>壹基金</td>
+                            <td>1111111</td>
+                            <td>2013-12-15</td>
+                            <td>
+                                <span class="redact">✎</span>
+                                <span class="del">✖</span>
+                            </td>
+                        </tr>-->
+                    </tbody>
+                </table>
+
+            </fieldset>
+        </form>
+    </div>
+</body>
+
+</html>
