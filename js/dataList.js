@@ -134,7 +134,7 @@ window.onload = function () {
         //判断是否超出总页数
         if (pageIndex >= pageTotol) {
             pageCurrent.innerHTML = pageTotol + 1;
-            alert('嘿，蠢驴，已经是最后一页了！');
+            alert('嘿，已经是最后一页了！');
             return false;
         };
         pageIndex++;
@@ -155,7 +155,7 @@ window.onload = function () {
         //判断是否超出总页数
         if (pageIndex < 1) {
             pageCurrent.innerHTML = 1;
-            alert('嘿，蠢驴，已经是首页了！');
+            alert('嘿，已经是首页了！');
             return false;
         };
         pageIndex--;
@@ -278,7 +278,7 @@ $('#t_body').on('click', '.redact', function () {
         trPname.html('<input type="text" class="rewriteInput" value="' + trPname.html() + '">');
         trUnit.html('<select name="unit" id="newSelect" class="getUnit"><option value="">' + trUnit + '</option></select>');
         trMoney.html('<input type="number" class="rewriteInput" value="' + trMoney.html() + '">');
-        trDate.html('<input type="text" class="rewriteInput rewriteDate" id="J-xl" value="' + trDate + '">');
+        trDate.html('<input type="text" class="rewriteInput rewriteDate" id="J-xl" value="' + trDate.html() + '">');
         //添加捐款选项
         getSel($('#newSelect')[0], 'set');
         console.log($('#newSelect')[0]);
